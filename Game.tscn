@@ -1,0 +1,123 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Grid/grid.gd" type="Script" id=1]
+[ext_resource path="res://Pieces/Piece Background.tscn" type="PackedScene" id=2]
+[ext_resource path="res://UI/Menu.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Baku-Outline.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://UI/Camera.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Ship.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Assets/58277__benboncan__cow.wav" type="AudioStream" id=7]
+[ext_resource path="res://Instructions.gd" type="Script" id=8]
+
+[sub_resource type="DynamicFont" id=3]
+size = 20
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 4 )
+
+[node name="Game" type="Node2D"]
+
+[node name="grid" type="Node2D" parent="."]
+script = ExtResource( 1 )
+width = 7
+height = 10
+xStart = 80
+yStart = 832
+offset = 70
+background = ExtResource( 2 )
+
+[node name="Camera" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
+script = ExtResource( 5 )
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -15.146
+autoplay = true
+
+[node name="Cow" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+
+[node name="HUD" type="Control" parent="Cow"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="Cow/HUD"]
+margin_right = 576.0
+margin_bottom = 20.0
+custom_fonts/font = SubResource( 3 )
+text = "Score: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Time" type="Label" parent="Cow/HUD"]
+margin_right = 565.0
+margin_bottom = 20.0
+custom_fonts/font = SubResource( 3 )
+text = "Time:"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="Cow/HUD"]
+autostart = true
+
+[node name="Instructions" type="Control" parent="Cow"]
+pause_mode = 2
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Cow/Instructions"]
+pause_mode = 2
+margin_right = 567.0
+margin_bottom = 1024.0
+color = Color( 0, 0, 0, 0.752941 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Cow/Instructions"]
+margin_left = -2.68414
+margin_top = 8.05237
+margin_right = 573.316
+margin_bottom = 1032.05
+custom_fonts/font = SubResource( 1 )
+text = "Level 1
+
+How many points can 
+you score in 60 seconds?"
+align = 1
+valign = 1
+
+[node name="Countdown_label" type="Label" parent="Cow/Instructions"]
+margin_left = -14.2302
+margin_top = 134.265
+margin_right = 561.77
+margin_bottom = 1158.27
+custom_fonts/font = SubResource( 2 )
+text = "Starting in"
+align = 1
+valign = 1
+
+[node name="Countdown" type="Timer" parent="Cow/Instructions"]
+autostart = true
+
+[connection signal="timeout" from="Cow/HUD/Timer" to="Cow/HUD" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Cow/Instructions/Countdown" to="Cow/Instructions" method="_on_Countdown_timeout"]
